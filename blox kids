@@ -1,0 +1,47 @@
+-- Script dịch chuyển đến tất cả các rương trên bản đồ Sea 1 trong Blox Fruits
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+-- Danh sách các vị trí rương trong Sea 1 (có thể cập nhật thêm)
+local sea1ChestLocations = {
+    Vector3.new(-100, 10, 50),  -- Ví dụ vị trí rương 1
+    Vector3.new(200, 15, -300), -- Ví dụ vị trí rương 2
+    Vector3.new(-500, 20, 400), -- Ví dụ vị trí rương 3
+    -- Thêm các vị trí khác tại đây
+}
+
+-- Hàm tìm rương gần nhất trong Sea 1
+local function findNearestChest()
+    local nearestChest = nil
+    local nearestDistance = math.huge
+
+    for _, chestPosition in pairs(sea1ChestLocations) do
+        local distance = (humanoidRootPart.Position - chestPosition).Magnitude
+        if distance < nearestDistance then
+            nearestDistance = distance
+            nearestChest = chestPosition
+        end
+    end
+
+    return nearestChest
+end
+
+-- Hàm dịch chuyển đến rương
+local function teleportToChest(chestPosition)
+    humanoidRootPart.CFrame = CFrame.new(chestPosition) + Vector3.new(0, 5, 0) -- Di chuyển đến vị trí của rương
+    wait(1) -- Đợi một chút để đảm bảo nhân vật đã đến vị trí
+    -- Giả sử rương có ClickDetector, bạn có thể thêm fireclickdetector ở đây nếu cần
+end
+
+-- Hàm chính để dịch chuyển đến tất cả các rương trong Sea 1
+local function teleportToAllSea1Chests()
+    for _, chestPosition in pairs(sea1ChestLocations) do
+        teleportToChest(chestPosition)
+        wait(2) -- Đợi một chút trước khi di chuyển đến rương tiếp theo
+    end
+    print("Đã dịch chuyển đến tất cả các rương trong Sea 1.")
+end
+
+-- Gọi hàm chính
+teleportToAllSea1Chests()
