@@ -1,0 +1,31 @@
+
+local areas = {
+    "Colosseum", "Desert", "Fountain",
+    "Magma", "MobBoss", "Pirate", "Prison",
+    "Sky", "SkyArea1", "SkyArea2",
+    "Town"
+}
+
+local function teleportToChest(area, index)
+    local chestPath = workspace.Map:FindFirstChild(area)
+    if chestPath then
+        local chests = chestPath:FindFirstChild("Chests")
+        if chests then
+            local targetChest = chests:GetChildren()[index]
+            if targetChest and targetChest:IsA("BasePart") then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = targetChest.CFrame
+            end
+        end
+    end
+end
+
+local function mainLoop()
+    while true do
+        for _, area in ipairs(areas) do
+            for index = 1, 10 do
+                teleportToChest(area, index)
+                wait(0.1)  -- Corrected the wait time from wait(0,1) to wait(0.1)
+            end
+        end
+    end
+end
